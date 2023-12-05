@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: service2
+  template: 
+    metadata: 
+      labels:
+        app: service2
+    spec:
+      containers:
+      - name: service2
+        image: gurpartaprandhawa/gurpartap-demo:service2-image
+        ports:
+        - containerPort: 5001
+        readinessProbe:
+          httpGet:
+            path: /path2
+            port: 5001
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /path2
+            port: 5001
+          initialDelaySeconds: 10
+          periodSeconds: 15 

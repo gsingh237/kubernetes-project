@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: path-based-routing  
+  annotations: 
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    #kubernetes.io/ingress.class: ingress-nginx
+  labels:
+    #app.kubernetes.io/name: ingress-nginx
+    #app: nginx-ingress   
+spec:
+  rules:
+  - host: abc.com
+    http: 
+      paths:
+      - pathType: Prefix
+        path: /path1
+        backend:
+          service: 
+            name: service1
+            port: 
+              number: 8080
+      - pathType: Prefix
+        path: /path2
+        backend:
+          service:
+            name: service2
+            port:
+              number: 8081
