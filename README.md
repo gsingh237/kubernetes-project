@@ -5,7 +5,7 @@ if you are using baremetal then make sure you have entry in /etc/hostname file f
 STEPS: 
 
 Create deployments,services and Ingress for app1 and app2
-go to Kubernetes dir create all the resources in one go using kubectl apply -f . OR create one by one using below command
+go to directory named Kubernetes and  create all the resources in one go using using below command
 kubectl create -f app1.deployment.yaml; kubectl create -f app2.deployment.yaml; kubectl create -f svc1.yaml; kubectl create -f svc2.yaml; kubectl create -f ingress-svc.yaml; kubectl create -f ingress.yaml; kubectl create -f nginx-deployment.yaml
 
 Above commands with create deployments, svc and ingres controller for app1 and app2
