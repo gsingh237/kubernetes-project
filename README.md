@@ -18,19 +18,26 @@ lets first check direct services output without Ingress/loadbalancer.
 
 2. Test response for service1 using curl http://{{cluster-IP-of-service1}}:8080/path1
     e.g. suppose clusterip of service1 is 10.109.164.255 then full command will be 
+
     curl http://10.109.164.255:8080/path1 
+
     OUTPUT: This is Service1 Response!
 
 3.  Test response for service2 using curl http://{{cluster-IP-of-service2}}:8081/path2
     e.g. suppose clusterip of service2 is 10.108.33.36 then full command will be 
+
     curl http://10.108.33.36:8081/path2 
+
     OUTPUT: This is Service2 Response!   
 
 4. To check self-healing delete the pods, you will see it will be created automatically and ensure always 3 replicas of each service is running. 
 
 5. If above scenarios are working. Now install nginx-ingress using helm. use below commands to install nginx-ingress
+
    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
    helm repo update
+   
    helm install nginx-ingress ingress-nginx/ingress-nginx
 
    It will create deployment, pods, services, service-account and other resources in nginx-ingress namespace
