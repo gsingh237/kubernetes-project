@@ -1,14 +1,18 @@
 prerequisite: Install helm3 to install Ingress controller. 
 You should have access to dockerHub to pull the images given for sample apps in deployment files or you can create docker images from code provided in service1 and service2 directories.
-if you are using baremetal then make sure you have entry in /etc/hostname file for Ingress IP to resolve DNS.
+if you are using baremetal then make sure you have an entry for abc.com  in /etc/hostname for your machine IP
+IP-address
+get nodes -o wide 
+If you are using minikube then enable ingress addons using below command
+minikube addons enable ingress
 
 STEPS: 
 
 Create deployments,services and Ingress for app1 and app2
 go to directory named Kubernetes and  create all the resources in one go using kubectl apply -f . OR use below command
-kubectl create -f app1.deployment.yaml; kubectl create -f app2.deployment.yaml; kubectl create -f svc1.yaml; kubectl create -f svc2.yaml; kubectl create -f ingress-svc.yaml; kubectl create -f ingress.yaml; kubectl create -f nginx-deployment.yaml
+kubectl create -f app1.deployment.yaml; kubectl create -f app2.deployment.yaml; kubectl create -f svc1.yaml; kubectl create -f svc2.yaml; kubectl create -f ingress-svc.yaml; kubectl create -f ingress.yaml
 
-Above commands with create deployments, svc and ingres controller for app1 and app2
+Above commands will create deployments, svc and ingres controller for app1 and app2
 check the output using kubectl get all command. It will show 3 replicas of each service, Ingress and svc.
 
 STEPS FOR TESTING
@@ -40,7 +44,7 @@ lets first check direct services output without Ingress/loadbalancer.
    
    helm install nginx-ingress ingress-nginx/ingress-nginx
 
-   It will create deployment, pods, services, service-account and other resources in nginx-ingress namespace
+   It will create deployment, pods, services and other resources in default namespace
 
 6. Make entry in /etc/hostname file and check response from abc.com/path1 and abc.com/path2.
 

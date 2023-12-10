@@ -3,7 +3,7 @@ from flask import Flask
 
 app = Flask(__name__)
 
-@app.route('/path2')
+@app.route('/')
 def service2():
     return "Hello, This is Service2 Response!"
 
