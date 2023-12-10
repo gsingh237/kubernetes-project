@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: service1
+  namespace: ingress-nginx
 spec:
   replicas: 3
   selector:
@@ -20,13 +21,13 @@ spec:
         - containerPort: 5001
         readinessProbe:
           httpGet:
-            path: /path1
+            path: /
             port: 5001
           initialDelaySeconds: 5
           periodSeconds: 10
         livenessProbe:
           httpGet:
-            path: /path1
+            path: /
             port: 5001
           initialDelaySeconds: 10
           periodSeconds: 15 
