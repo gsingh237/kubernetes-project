@@ -8,7 +8,7 @@ If you are using minikube then enable ingress addons using below command
 minikube addons enable ingress
 
 DEPLOYMENT STEPS: 
-1. Go to Kubernetes directory
+1. Go to kubernetes directory
 
 2. First deploy ingress controller using nginx-deployment.yaml because it will create ingress-nginx namespace and other resources. use below command 
 kubectl create -f nginx-deployment.yaml
