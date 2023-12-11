@@ -1,51 +1,56 @@
-prerequisite: Install helm3 to install Ingress controller. 
-You should have access to dockerHub to pull the images given for sample apps in deployment files or you can create docker images from code provided in service1 and service2 directories.
-if you are using baremetal then make sure you have an entry for abc.com  in /etc/hostname for your machine IP
-IP-address
-get nodes -o wide 
+Prerequisites 
+
+1. You should have access to dockerHub to pull the images given for sample apps in deployment files or you can create docker images from code provided in service1 and service2 directories.
+ 2. Make sure you have an entry for abc.com against your Kubernetes node IP in /etc/hosts so that abc.com should resolve to node IP.
+ e.g node-IP    nodename    abc.com
+
 If you are using minikube then enable ingress addons using below command
 minikube addons enable ingress
 
-STEPS: 
+DEPLOYMENT STEPS: 
+1. Go to Kubernetes directory
 
-Create deployments,services and Ingress for app1 and app2
-go to directory named Kubernetes and  create all the resources in one go using kubectl apply -f . OR use below command
-kubectl create -f app1.deployment.yaml; kubectl create -f app2.deployment.yaml; kubectl create -f svc1.yaml; kubectl create -f svc2.yaml; kubectl create -f ingress-svc.yaml; kubectl create -f ingress.yaml
+2. First deploy ingress controller using nginx-deployment.yaml because it will create ingress-nginx namespace and other resources. use below command 
+kubectl create -f nginx-deployment.yaml
+It will create ingress-nginx-controller pod and other resources in namespace named ingress-nginx
 
-Above commands will create deployments, svc and ingres controller for app1 and app2
-check the output using kubectl get all command. It will show 3 replicas of each service, Ingress and svc.
+3. Create deployments,services and Ingress for app1 and app2 using below command
+kubectl create -f app1.deployment.yaml; kubectl create -f app2.deployment.yaml; kubectl create -f svc1.yaml; kubectl create -f svc2.yaml; kubectl create -f ingress.yaml
 
-STEPS FOR TESTING
-lets first check direct services output without Ingress/loadbalancer.
+Above commands will create deployments, svc for app1 and app2 and ingress in namespace named ingress-nginx.
+check the output using kubectl get all -n ingress-nginx command. It will show 3 replicas for each apps named service1 and service2 are up a, svc and Ingress.
 
-1. Execute kubectl get svc, it will show cluster-IP for service1 and service2. Service1 will listen on port 8080 and service2 will listen on port 8081. Note down Cluster-IP of both services.
+4. Make an entry for abc.com against your Kubernetes node IP in /etc/hosts so that abc.com should resolve to node IP.
+ e.g node-IP    nodename    abc.com
 
-2. Test response for service1 using curl http://{{cluster-IP-of-service1}}:8080/path1
-    e.g. suppose clusterip of service1 is 10.109.164.255 then full command will be 
+TESTING PREREQUISITES 
 
-    curl http://10.109.164.255:8080/path1 
+1. Make sure both apps app1, app2 and ingress-nginx-controller pods are running.
 
-    OUTPUT: This is Service1 Response!
+2. Make sure you have an entry for abc.com against your Kubernetes node IP in /etc/hosts so that abc.com should resolve to node IP.
+ e.g node-IP    nodename    abc.com
+  
+3. Note down ingress-nginx-controller NodePort number by executing below command
+   kubectl get svc ingress-nginx-controller -n ingress-nginx  (This number should be between 30000 to 32767)
 
-3.  Test response for service2 using curl http://{{cluster-IP-of-service2}}:8081/path2
-    e.g. suppose clusterip of service2 is 10.108.33.36 then full command will be 
+TESTING STEPS:
 
-    curl http://10.108.33.36:8081/path2 
+1. Execute below curl command to check app1 response. In below examples I am assuming        NodePort number is 30824
+    curl http://abc.com:30824/path1 
 
-    OUTPUT: This is Service2 Response!   
+  OUTPUT: Hello, This is Service1 Response!
+
+  NOTE : change NodePort number with your NodePort  ( Noted in TESTING PREREQUISITES step3  )
+
+2. Execute below curl command to check app2 response.
+    curl http://abc.com:30824/path2
+
+  OUTPUT: Hello, This is Service2 Response!    
+
 
 4. To check self-healing delete the pods, you will see it will be created automatically and ensure always 3 replicas of each service is running. 
 
-5. If above scenarios are working. Now install nginx-ingress using helm. use below commands to install nginx-ingress
 
-   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
-   helm repo update
-   
-   helm install nginx-ingress ingress-nginx/ingress-nginx
-
-   It will create deployment, pods, services and other resources in default namespace
-
-6. Make entry in /etc/hostname file and check response from abc.com/path1 and abc.com/path2.
 
 
