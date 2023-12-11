@@ -1,13 +1,12 @@
-Prerequisites 
+PREREQUISITES
 
-1. You should have access to dockerHub to pull the images given for sample apps in deployment files or you can create docker images from code provided in service1 and service2 directories.
- 2. Make sure you have an entry for abc.com against your Kubernetes node IP in /etc/hosts so that abc.com should resolve to node IP.
- e.g node-IP    nodename    abc.com
+1. You should have access to dockerHub to pull the images given for sample apps in deployment files.
 
-If you are using minikube then enable ingress addons using below command
+ OPTIONAL : If you are using minikube then enable ingress addons using below command
 minikube addons enable ingress
 
 DEPLOYMENT STEPS: 
+
 1. Go to kubernetes directory
 
 2. First deploy ingress controller using nginx-deployment.yaml because it will create ingress-nginx namespace and other resources. use below command 
